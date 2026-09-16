@@ -109,12 +109,14 @@ class AttendanceController extends Controller
             ], 422);
         }
 
-        // Validasi input
+        // Validasi input: toleransi akurasi GPS diperlonggar agar kompatibel dengan browser PC/WiFi & indoor
         $request->validate([
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
-            'accuracy' => 'required|numeric|min:0',
+            'accuracy' => 'required|numeric|min:0|max:5000',
             'selfie' => 'required|image|max:2048',
+        ], [
+            'accuracy.max' => 'Akurasi GPS tidak valid atau sinyal lokasi terputus. Mohon pastikan GPS aktif.',
         ]);
 
         $today = Carbon::today();
@@ -147,7 +149,7 @@ class AttendanceController extends Controller
             ], 422);
         }
 
-        // Validasi radius di SERVER
+        // Hitung jarak ke kantor di SERVER
         $distance = $this->calculateDistance(
             $request->latitude,
             $request->longitude,
@@ -155,47 +157,47 @@ class AttendanceController extends Controller
             $officeLocation->longitude
         );
 
-        if ($distance > $officeLocation->radius_meter) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Anda berada di luar radius lokasi absensi.',
-                'distance' => round($distance),
-                'radius' => $officeLocation->radius_meter,
-            ], 422);
-        }
-
         // Simpan selfie melalui Laravel Storage
         $selfiePath = $request->file('selfie')->store('selfies', 'public');
 
-        // Tentukan status hadir/terlambat
+        // Tentukan status kehadiran
         $now = Carbon::now();
-        $status = 'hadir';
+        $isOutsideRadius = $distance > $officeLocation->radius_meter;
+        $keterangan = null;
 
-        $dayNames = [
-            1 => 'senin',
-            2 => 'selasa',
-            3 => 'rabu',
-            4 => 'kamis',
-            5 => 'jumat',
-            6 => 'sabtu',
-            0 => 'minggu',
-        ];
-        $dayColumn = $dayNames[$now->dayOfWeek] ?? 'senin';
+        if ($isOutsideRadius) {
+            // Jika di luar radius kantor, otomatis dikategorikan sebagai Dinas Luar / Lapangan
+            $status = 'dinas';
+            $keterangan = 'Absensi di luar radius kantor (Dinas Luar/Lapangan, Jarak: ' . round($distance) . 'm)';
+        } else {
+            $status = 'hadir';
 
-        $workSchedule = WorkSchedule::where('status', true)
-            ->where($dayColumn, true)
-            ->first();
+            $dayNames = [
+                1 => 'senin',
+                2 => 'selasa',
+                3 => 'rabu',
+                4 => 'kamis',
+                5 => 'jumat',
+                6 => 'sabtu',
+                0 => 'minggu',
+            ];
+            $dayColumn = $dayNames[$now->dayOfWeek] ?? 'senin';
 
-        if (!$workSchedule) {
-            $workSchedule = WorkSchedule::where('status', true)->first() ?: WorkSchedule::first();
-        }
+            $workSchedule = WorkSchedule::where('status', true)
+                ->where($dayColumn, true)
+                ->first();
 
-        if ($workSchedule) {
-            $jamMasuk = Carbon::parse($workSchedule->jam_masuk);
-            $batasTerlambat = $jamMasuk->copy()->addMinutes($workSchedule->toleransi_terlambat);
+            if (!$workSchedule) {
+                $workSchedule = WorkSchedule::where('status', true)->first() ?: WorkSchedule::first();
+            }
 
-            if ($now->format('H:i:s') > $batasTerlambat->format('H:i:s')) {
-                $status = 'terlambat';
+            if ($workSchedule) {
+                $jamMasuk = Carbon::parse($workSchedule->jam_masuk);
+                $batasTerlambat = $jamMasuk->copy()->addMinutes($workSchedule->toleransi_terlambat);
+
+                if ($now->format('H:i:s') > $batasTerlambat->format('H:i:s')) {
+                    $status = 'terlambat';
+                }
             }
         }
 
@@ -210,6 +212,7 @@ class AttendanceController extends Controller
             'distance_masuk' => round($distance, 2),
             'selfie_masuk' => $selfiePath,
             'status' => $status,
+            'keterangan' => $keterangan,
             'ip_address' => $request->ip(),
             'user_agent' => $request->userAgent(),
         ]);
@@ -222,6 +225,20 @@ class AttendanceController extends Controller
             'accuracy' => $request->accuracy,
             'recorded_at' => $now,
         ]);
+
+        // Audit Trail log
+        \App\Models\AuditLog::record(
+            $user->id,
+            'check_in',
+            Attendance::class,
+            $attendance->id,
+            [
+                'employee' => $employee->nama,
+                'status' => $status,
+                'distance' => round($distance, 2),
+                'accuracy' => $request->accuracy,
+            ]
+        );
 
         return response()->json([
             'success' => true,
@@ -248,12 +265,14 @@ class AttendanceController extends Controller
             ], 422);
         }
 
-        // Validasi input
+        // Validasi input: toleransi akurasi diperlonggar
         $request->validate([
             'latitude' => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
-            'accuracy' => 'required|numeric|min:0',
+            'accuracy' => 'required|numeric|min:0|max:5000',
             'selfie' => 'required|image|max:2048',
+        ], [
+            'accuracy.max' => 'Akurasi GPS tidak valid atau sinyal lokasi terputus. Mohon pastikan GPS aktif.',
         ]);
 
         $today = Carbon::today();
@@ -293,7 +312,7 @@ class AttendanceController extends Controller
             ], 422);
         }
 
-        // Validasi radius di SERVER
+        // Hitung jarak ke kantor di SERVER
         $distance = $this->calculateDistance(
             $request->latitude,
             $request->longitude,
@@ -301,29 +320,27 @@ class AttendanceController extends Controller
             $officeLocation->longitude
         );
 
-        if ($distance > $officeLocation->radius_meter) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Anda berada di luar radius lokasi absensi.',
-                'distance' => round($distance),
-                'radius' => $officeLocation->radius_meter,
-            ], 422);
-        }
-
         // Simpan selfie
         $selfiePath = $request->file('selfie')->store('selfies', 'public');
 
         $now = Carbon::now();
 
         // Update record absensi
-        $attendance->update([
+        $updateData = [
             'jam_pulang' => $now->format('H:i:s'),
             'latitude_pulang' => $request->latitude,
             'longitude_pulang' => $request->longitude,
             'accuracy_pulang' => $request->accuracy,
             'distance_pulang' => round($distance, 2),
             'selfie_pulang' => $selfiePath,
-        ]);
+        ];
+
+        // Jika check-in bukan dinas_luar tapi pulang di luar radius, tambahkan keterangan
+        if ($distance > $officeLocation->radius_meter && empty($attendance->keterangan)) {
+            $updateData['keterangan'] = 'Check-out di luar radius kantor (' . round($distance) . 'm)';
+        }
+
+        $attendance->update($updateData);
 
         // Simpan ke attendance_locations
         AttendanceLocation::create([
@@ -333,6 +350,20 @@ class AttendanceController extends Controller
             'accuracy' => $request->accuracy,
             'recorded_at' => $now,
         ]);
+
+        // Audit Trail log
+        \App\Models\AuditLog::record(
+            $user->id,
+            'check_out',
+            Attendance::class,
+            $attendance->id,
+            [
+                'employee' => $employee->nama,
+                'status' => $attendance->status,
+                'distance' => round($distance, 2),
+                'accuracy' => $request->accuracy,
+            ]
+        );
 
         return response()->json([
             'success' => true,

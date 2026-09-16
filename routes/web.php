@@ -66,6 +66,51 @@ Route::middleware(['auth', 'role:admin'])
             'show'
         ])->name('admin.attendance-monitoring.show');
 
+        Route::get('/monitoring-gps', [
+            \App\Http\Controllers\Admin\GpsMonitoringController::class,
+            'index'
+        ])->name('admin.gps-monitoring.index');
+
+        Route::patch('/pengajuan-izin/{leaveRequest}/approve', [
+            \App\Http\Controllers\Admin\LeaveRequestController::class,
+            'approve'
+        ])->name('admin.leave-requests.approve');
+
+        Route::patch('/pengajuan-izin/{leaveRequest}/reject', [
+            \App\Http\Controllers\Admin\LeaveRequestController::class,
+            'reject'
+        ])->name('admin.leave-requests.reject');
+
+        Route::get('/rekap', [
+            \App\Http\Controllers\Admin\RecapController::class,
+            'index'
+        ])->name('admin.recap.index');
+
+        Route::get('/laporan', [
+            \App\Http\Controllers\Admin\ReportController::class,
+            'index'
+        ])->name('admin.reports.index');
+
+        Route::get('/laporan/export-pdf', [
+            \App\Http\Controllers\Admin\ReportController::class,
+            'exportPdf'
+        ])->name('admin.reports.export-pdf');
+
+        Route::get('/laporan/export-excel', [
+            \App\Http\Controllers\Admin\ReportController::class,
+            'exportExcel'
+        ])->name('admin.reports.export-excel');
+
+        Route::get('/pengajuan-izin', [
+            \App\Http\Controllers\Admin\LeaveRequestController::class,
+            'index'
+        ])->name('admin.leave-requests.index');
+
+        Route::get('/pengajuan-izin/{leaveRequest}', [
+            \App\Http\Controllers\Admin\LeaveRequestController::class,
+            'show'
+        ])->name('admin.leave-requests.show');
+
     });
 
 Route::middleware(['auth', 'role:pppk'])
@@ -100,6 +145,26 @@ Route::middleware(['auth', 'role:pppk'])
             \App\Http\Controllers\Employee\AttendanceHistoryController::class,
             'show'
         ])->name('attendance.history.show');
+
+        Route::get('/pengajuan-izin', [
+            \App\Http\Controllers\Employee\LeaveRequestController::class,
+            'index'
+        ])->name('leave-requests.index');
+
+        Route::get('/pengajuan-izin/create', [
+            \App\Http\Controllers\Employee\LeaveRequestController::class,
+            'create'
+        ])->name('leave-requests.create');
+
+        Route::post('/pengajuan-izin', [
+            \App\Http\Controllers\Employee\LeaveRequestController::class,
+            'store'
+        ])->name('leave-requests.store');
+
+        Route::get('/pengajuan-izin/{leaveRequest}', [
+            \App\Http\Controllers\Employee\LeaveRequestController::class,
+            'show'
+        ])->name('leave-requests.show');
 
     });
 

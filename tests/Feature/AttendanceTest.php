@@ -105,7 +105,7 @@ test('endpoint status absensi mengembalikan json dengan waktu server', function 
     ]);
 });
 
-test('check-in ditolak jika berada di luar radius kantor', function () {
+test('check-in di luar radius kantor tercatat sebagai dinas luar', function () {
     $file = UploadedFile::fake()->image('selfie.jpg');
 
     // Koordinat jauh (Jakarta: -6.2088, 106.8456)
@@ -116,11 +116,18 @@ test('check-in ditolak jika berada di luar radius kantor', function () {
         'selfie' => $file,
     ]);
 
-    $response->assertStatus(422);
+    $response->assertStatus(200);
     $response->assertJson([
-        'success' => false,
+        'success' => true,
+        'attendance' => [
+            'status' => 'dinas',
+        ],
     ]);
-    $this->assertStringContainsString('di luar radius', $response->json('message'));
+
+    $this->assertDatabaseHas('attendances', [
+        'employee_id' => $this->employee->id,
+        'status' => 'dinas',
+    ]);
 });
 
 test('check-in ditolak jika selfie tidak dilampirkan', function () {

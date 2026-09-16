@@ -233,22 +233,46 @@
                                 <div id="action-alert" class="hidden mb-4 p-4 rounded-md text-sm"></div>
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                    <button id="btn-checkin" onclick="submitAttendance('check-in')" disabled class="relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed shadow transition">
-                                        <span id="text-checkin" class="text-lg">Check In</span>
-                                        <svg id="spinner-checkin" class="hidden animate-spin ml-2 h-5 w-5 text-white absolute right-4 top-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                    </button>
+                                    <div>
+                                        <button id="btn-checkin" onclick="submitAttendance('check-in')" disabled class="relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed shadow transition">
+                                            <span id="text-checkin" class="text-lg">Absen Masuk</span>
+                                            <svg id="spinner-checkin" class="hidden animate-spin ml-2 h-5 w-5 text-white absolute right-4 top-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </button>
+                                        @if($attendance)
+                                            <p class="text-xs text-center text-emerald-600 font-medium mt-2">
+                                                ✓ Sudah Absen Masuk ({{ $attendance->jam_masuk }})
+                                            </p>
+                                        @endif
+                                    </div>
                                     
-                                    <button id="btn-checkout" onclick="submitAttendance('check-out')" disabled class="relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed shadow transition">
-                                        <span id="text-checkout" class="text-lg">Check Out</span>
-                                        <svg id="spinner-checkout" class="hidden animate-spin ml-2 h-5 w-5 text-white absolute right-4 top-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                        </svg>
-                                    </button>
+                                    <div>
+                                        <button id="btn-checkout" onclick="submitAttendance('check-out')" disabled class="relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 disabled:opacity-50 disabled:cursor-not-allowed shadow transition">
+                                            <span id="text-checkout" class="text-lg">Absen Pulang</span>
+                                            <svg id="spinner-checkout" class="hidden animate-spin ml-2 h-5 w-5 text-white absolute right-4 top-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </button>
+                                        @if($attendance && $attendance->jam_pulang)
+                                            <p class="text-xs text-center text-blue-600 font-medium mt-2">
+                                                ✓ Sudah Absen Pulang ({{ $attendance->jam_pulang }})
+                                            </p>
+                                        @elseif(!$attendance)
+                                            <p class="text-xs text-center text-gray-500 mt-2">
+                                                Lakukan Absen Masuk terlebih dahulu
+                                            </p>
+                                        @endif
+                                    </div>
                                 </div>
+
+                                @if($attendance && $attendance->jam_pulang)
+                                    <div class="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-center text-sm text-blue-700">
+                                        Presensi hari ini telah lengkap (Absen Masuk & Pulang telah tercatat).
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -475,8 +499,8 @@
                         radiusStatus.textContent = 'Dalam Radius';
                         radiusStatus.className = 'px-3 py-1 rounded-full text-xs font-bold bg-green-100 text-green-700';
                     } else {
-                        radiusStatus.textContent = 'Di Luar Radius';
-                        radiusStatus.className = 'px-3 py-1 rounded-full text-xs font-bold bg-red-100 text-red-700';
+                        radiusStatus.textContent = 'Luar Radius (Dinas Luar)';
+                        radiusStatus.className = 'px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-700';
                     }
                     
                     gpsLoading.classList.add('hidden');
@@ -603,7 +627,8 @@
         function updateButtonState() {
             if (!btnCheckin || !btnCheckout) return;
             
-            const isReady = currentLat !== null && capturedBlob !== null && isWithinRadius && !isSubmitting;
+            // Siap jika GPS terdeteksi, foto selfie sudah diambil, dan tidak sedang submit
+            const isReady = currentLat !== null && capturedBlob !== null && !isSubmitting;
             
             // Check In button logic
             if (isReady && !hasCheckedIn) {

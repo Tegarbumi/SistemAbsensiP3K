@@ -42,6 +42,7 @@ beforeEach(function () {
     $this->office = OfficeLocation::create([
         'unit_id' => $this->unit->id,
         'nama' => 'Kantor Disarpus',
+        'alamat' => 'Jl. MT Haryono No. 9',
         'latitude' => -6.5683,
         'longitude' => 107.7634,
         'radius_meter' => 100,

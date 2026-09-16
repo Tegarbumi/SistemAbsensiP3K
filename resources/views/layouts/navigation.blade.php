@@ -23,6 +23,9 @@
                         <x-nav-link :href="route('attendance.history.index')" :active="request()->routeIs('attendance.history.*')">
                             {{ __('Riwayat Absensi') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('leave-requests.index')" :active="request()->routeIs('leave-requests.*')">
+                            {{ __('Pengajuan Izin') }}
+                        </x-nav-link>
                     @endif
 
                     @if(Auth::user()->role === 'admin')
@@ -40,6 +43,18 @@
                         </x-nav-link>
                         <x-nav-link :href="route('admin.attendance-monitoring.index')" :active="request()->routeIs('admin.attendance-monitoring.*')">
                             {{ __('Monitoring Absensi') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.gps-monitoring.index')" :active="request()->routeIs('admin.gps-monitoring.*')">
+                            {{ __('Monitoring GPS') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.recap.index')" :active="request()->routeIs('admin.recap.*')">
+                            {{ __('Rekap Absensi') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.*')">
+                            {{ __('Laporan') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('admin.leave-requests.index')" :active="request()->routeIs('admin.leave-requests.*')">
+                            {{ __('Persetujuan Izin') }}
                         </x-nav-link>
                     @endif
                 </div>
@@ -105,6 +120,9 @@
                 <x-responsive-nav-link :href="route('attendance.history.index')" :active="request()->routeIs('attendance.history.*')">
                     {{ __('Riwayat Absensi') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('leave-requests.index')" :active="request()->routeIs('leave-requests.*')">
+                    {{ __('Pengajuan Izin') }}
+                </x-responsive-nav-link>
             @endif
 
             @if(Auth::user()->role === 'admin')
@@ -122,6 +140,18 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.attendance-monitoring.index')" :active="request()->routeIs('admin.attendance-monitoring.*')">
                     {{ __('Monitoring Absensi') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.gps-monitoring.index')" :active="request()->routeIs('admin.gps-monitoring.*')">
+                    {{ __('Monitoring GPS') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.recap.index')" :active="request()->routeIs('admin.recap.*')">
+                    {{ __('Rekap Absensi') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.*')">
+                    {{ __('Laporan') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.leave-requests.index')" :active="request()->routeIs('admin.leave-requests.*')">
+                    {{ __('Persetujuan Izin') }}
                 </x-responsive-nav-link>
             @endif
         </div>
