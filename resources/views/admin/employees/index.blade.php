@@ -39,16 +39,16 @@
             @endif
 
             <!-- Form Filter & Pencarian -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl border border-gray-200 p-6">
+            <div class="bg-white dark:bg-slate-900 overflow-hidden shadow-sm sm:rounded-xl border border-gray-200 dark:border-slate-800 p-6 transition-colors duration-200">
                 <form method="GET" action="{{ route('admin.employees.index') }}" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 items-end">
                     <div>
-                        <label for="search" class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Cari Nama / NIP</label>
-                        <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Ketik nama atau NIP..." class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <label for="search" class="block text-xs font-semibold text-gray-700 dark:text-slate-300 uppercase tracking-wider mb-1">Cari Nama / NIP</label>
+                        <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Ketik nama atau NIP..." class="w-full rounded-lg border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
                     </div>
 
                     <div>
-                        <label for="unit_id" class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Unit Kerja</label>
-                        <select name="unit_id" id="unit_id" class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <label for="unit_id" class="block text-xs font-semibold text-gray-700 dark:text-slate-300 uppercase tracking-wider mb-1">Unit Kerja</label>
+                        <select name="unit_id" id="unit_id" class="w-full rounded-lg border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
                             <option value="">Semua Unit Kerja</option>
                             @foreach($units as $unit)
                                 <option value="{{ $unit->id }}" {{ (string)request('unit_id') === (string)$unit->id ? 'selected' : '' }}>
@@ -59,8 +59,8 @@
                     </div>
 
                     <div>
-                        <label for="status" class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Status Kepegawaian</label>
-                        <select name="status" id="status" class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <label for="status" class="block text-xs font-semibold text-gray-700 dark:text-slate-300 uppercase tracking-wider mb-1">Status Kepegawaian</label>
+                        <select name="status" id="status" class="w-full rounded-lg border-gray-300 dark:border-slate-700 dark:bg-slate-800 dark:text-white shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
                             <option value="all">Semua Status</option>
                             <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Aktif</option>
                             <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Nonaktif</option>
@@ -71,7 +71,7 @@
                         <button type="submit" class="flex-1 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-lg shadow transition">
                             Cari
                         </button>
-                        <a href="{{ route('admin.employees.index') }}" class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 text-sm font-semibold rounded-lg transition text-center">
+                        <a href="{{ route('admin.employees.index') }}" class="px-3 py-2 bg-gray-100 dark:bg-slate-800 hover:bg-gray-200 dark:hover:bg-slate-700 text-gray-700 dark:text-slate-200 text-sm font-semibold rounded-lg transition text-center border border-gray-200 dark:border-slate-700">
                             Reset
                         </a>
                     </div>
@@ -79,15 +79,15 @@
             </div>
 
             <!-- Tabel Data PPPK -->
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl border border-gray-200">
-                <div class="p-6 border-b border-gray-200 flex justify-between items-center">
-                    <h3 class="text-base font-bold text-gray-900">Daftar Pegawai PPPK</h3>
-                    <span class="text-xs text-gray-500">Total: {{ $employees->total() }} pegawai</span>
+            <div class="bg-white dark:bg-slate-900 overflow-hidden shadow-sm sm:rounded-xl border border-gray-200 dark:border-slate-800 transition-colors duration-200">
+                <div class="p-6 border-b border-gray-200 dark:border-slate-800 flex justify-between items-center">
+                    <h3 class="text-base font-bold text-gray-900 dark:text-white">Daftar Pegawai PPPK</h3>
+                    <span class="text-xs text-gray-500 dark:text-slate-400">Total: {{ $employees->total() }} pegawai</span>
                 </div>
 
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200 text-sm text-left">
-                        <thead class="bg-gray-50 text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                    <table class="min-w-full divide-y divide-gray-200 dark:divide-slate-800 text-sm text-left">
+                        <thead class="bg-gray-50 dark:bg-slate-800/80 text-xs font-semibold text-gray-600 dark:text-slate-300 uppercase tracking-wider">
                             <tr>
                                 <th class="px-6 py-3.5">Pegawai</th>
                                 <th class="px-6 py-3.5">NIP / No PPPK</th>
@@ -97,41 +97,41 @@
                                 <th class="px-6 py-3.5 text-center">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-200 bg-white">
+                        <tbody class="divide-y divide-gray-200 dark:divide-slate-800 bg-white dark:bg-slate-900">
                             @forelse($employees as $emp)
-                                <tr class="hover:bg-gray-50 transition">
+                                <tr class="hover:bg-gray-50 dark:hover:bg-slate-800/50 transition">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="flex items-center space-x-3">
                                             @if($emp->foto)
-                                                <img src="{{ asset('storage/' . $emp->foto) }}" class="w-10 h-10 rounded-full object-cover border border-gray-200" alt="{{ $emp->nama }}">
+                                                <img src="{{ asset('storage/' . $emp->foto) }}" class="w-10 h-10 rounded-full object-cover border border-gray-200 dark:border-slate-700" alt="{{ $emp->nama }}">
                                             @else
-                                                <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">
+                                                <div class="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-400 flex items-center justify-center font-bold text-sm">
                                                     {{ strtoupper(substr($emp->nama, 0, 2)) }}
                                                 </div>
                                             @endif
                                             <div>
-                                                <div class="font-bold text-gray-900">{{ $emp->nama }}</div>
+                                                <div class="font-bold text-gray-900 dark:text-white">{{ $emp->nama }}</div>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="font-mono text-gray-900 text-xs">{{ $emp->nip }}</div>
-                                        <div class="text-xs text-gray-500">{{ $emp->nomor_pppk ?: '-' }}</div>
+                                        <div class="font-mono text-gray-900 dark:text-slate-200 text-xs">{{ $emp->nip }}</div>
+                                        <div class="text-xs text-gray-500 dark:text-slate-400">{{ $emp->nomor_pppk ?: '-' }}</div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="font-semibold text-gray-800 text-xs">{{ $emp->jabatan ?: '-' }}</div>
-                                        <div class="text-xs text-gray-500">{{ $emp->unit->nama ?? '-' }}</div>
+                                        <div class="font-semibold text-gray-800 dark:text-slate-200 text-xs">{{ $emp->jabatan ?: '-' }}</div>
+                                        <div class="text-xs text-gray-500 dark:text-slate-400">{{ $emp->unit->nama ?? '-' }}</div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-600">
+                                    <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-600 dark:text-slate-400">
                                         {{ $emp->user->email ?? '-' }}
                                     </td>
                                     <td class="px-6 py-4 text-center whitespace-nowrap">
                                         @if($emp->status)
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/60">
                                                 Aktif
                                             </span>
                                         @else
-                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-gray-100 dark:bg-slate-800 text-gray-700 dark:text-slate-400 border border-gray-200 dark:border-slate-700">
                                                 Nonaktif
                                             </span>
                                         @endif
