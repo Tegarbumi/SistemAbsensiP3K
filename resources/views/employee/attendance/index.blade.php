@@ -25,7 +25,7 @@
                         </div>
                         <div class="mt-4 md:mt-0 text-left md:text-right">
                             <p class="text-lg font-semibold text-gray-700">{{ $serverDateFormatted }}</p>
-                            <p class="text-3xl font-bold text-indigo-600 font-mono" id="clock">{{ $serverTime }}</p>
+                            <p class="text-3xl font-bold text-indigo-600 font-mono"><span id="clock">{{ $serverTime }}</span> <span class="text-sm font-sans font-medium text-gray-500">WIB</span></p>
                         </div>
                     </div>
                 </div>
