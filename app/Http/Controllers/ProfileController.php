@@ -34,6 +34,13 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
+        // Sinkronkan nama ke tabel employees agar dashboard selalu menampilkan nama terbaru
+        if ($request->user()->employee) {
+            $request->user()->employee->update([
+                'nama' => $request->user()->name,
+            ]);
+        }
+
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
