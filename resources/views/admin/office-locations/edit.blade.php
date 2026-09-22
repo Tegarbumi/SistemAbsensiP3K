@@ -78,6 +78,27 @@
                                 @enderror
                             </div>
 
+                            <!-- Fitur Tempel Link / Koordinat Sharelok -->
+                            <div class="p-3 bg-blue-50/80 border border-blue-200 rounded-xl space-y-2">
+                                <div class="flex items-center justify-between">
+                                    <label for="sharelokInput" class="block text-xs font-bold text-blue-900 flex items-center gap-1.5">
+                                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                        </svg>
+                                        Tempel Link / Titik Sharelok (Google Maps / WA)
+                                    </label>
+                                    <span class="text-[10px] text-blue-700 bg-blue-100 font-semibold px-2 py-0.5 rounded-full">Sistem Sharelok</span>
+                                </div>
+                                <div class="flex gap-2">
+                                    <input type="text" id="sharelokInput" placeholder="Contoh: -6.5683, 107.7634 atau link Google Maps..." class="block w-full rounded-lg border-blue-200 text-xs shadow-xs focus:border-blue-500 focus:ring-blue-500">
+                                    <button type="button" id="btnApplySharelok" class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-semibold whitespace-nowrap shadow-xs transition">
+                                        Terapkan
+                                    </button>
+                                </div>
+                                <p id="sharelokFeedback" class="text-[11px] font-medium hidden"></p>
+                            </div>
+
                             <!-- Koordinat Latitude & Longitude -->
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
@@ -240,6 +261,76 @@
                         radiusDisplay.textContent = r + ' meter';
                     }
                 });
+
+                // Handler Parsing Sharelok (Link Google Maps / Koordinat)
+                const sharelokInput = document.getElementById('sharelokInput');
+                const btnApplySharelok = document.getElementById('btnApplySharelok');
+                const sharelokFeedback = document.getElementById('sharelokFeedback');
+
+                function parseSharelok(rawText) {
+                    if (!rawText) return null;
+                    const text = rawText.trim();
+
+                    // 1. Format koordinat langsung: "-6.5683, 107.7634" atau "-6.5683 107.7634"
+                    const directMatch = text.match(/([-+]?\d{1,2}\.\d+)[,\s]+([-+]?\d{1,3}\.\d+)/);
+                    if (directMatch) {
+                        return {
+                            lat: parseFloat(directMatch[1]),
+                            lng: parseFloat(directMatch[2])
+                        };
+                    }
+
+                    // 2. Format URL query q=lat,lng atau ll=lat,lng
+                    const queryMatch = text.match(/[?&](?:q|ll)=([-+]?\d{1,2}\.\d+)[,\s]+([-+]?\d{1,3}\.\d+)/);
+                    if (queryMatch) {
+                        return {
+                            lat: parseFloat(queryMatch[1]),
+                            lng: parseFloat(queryMatch[2])
+                        };
+                    }
+
+                    // 3. Format URL path @lat,lng
+                    const atMatch = text.match(/@([-+]?\d{1,2}\.\d+),([-+]?\d{1,3}\.\d+)/);
+                    if (atMatch) {
+                        return {
+                            lat: parseFloat(atMatch[1]),
+                            lng: parseFloat(atMatch[2])
+                        };
+                    }
+
+                    // 4. Format URL data google maps !3dlat!4dlng
+                    const dataMatch = text.match(/!3d([-+]?\d{1,2}\.\d+)!4d([-+]?\d{1,3}\.\d+)/);
+                    if (dataMatch) {
+                        return {
+                            lat: parseFloat(dataMatch[1]),
+                            lng: parseFloat(dataMatch[2])
+                        };
+                    }
+
+                    return null;
+                }
+
+                if (btnApplySharelok) {
+                    btnApplySharelok.addEventListener('click', function () {
+                        const coords = parseSharelok(sharelokInput.value);
+                        if (coords) {
+                            updateCoordinates(coords.lat, coords.lng);
+                            map.setView([coords.lat, coords.lng], 17);
+                            sharelokFeedback.textContent = `✓ Berhasil menerapkan titik Sharelok (${coords.lat.toFixed(6)}, ${coords.lng.toFixed(6)}).`;
+                            sharelokFeedback.className = 'text-[11px] font-semibold text-emerald-600 block';
+                        } else {
+                            sharelokFeedback.textContent = 'Format sharelok tidak dikenali. Silakan tempel tautan Google Maps lengkap atau koordinat "lat, lng".';
+                            sharelokFeedback.className = 'text-[11px] font-semibold text-red-600 block';
+                        }
+                    });
+
+                    sharelokInput.addEventListener('keydown', function (e) {
+                        if (e.key === 'Enter') {
+                            e.preventDefault();
+                            btnApplySharelok.click();
+                        }
+                    });
+                }
 
                 document.getElementById('btnCurrentLocation').addEventListener('click', function () {
                     if (navigator.geolocation) {

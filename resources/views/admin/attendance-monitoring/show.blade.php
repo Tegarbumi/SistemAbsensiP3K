@@ -38,7 +38,10 @@
                             <div class="text-xs text-gray-500">
                                 <span>NIP: {{ $employee?->nip ?: '-' }}</span> &bull;
                                 <span>Jabatan: {{ $employee?->jabatan ?: '-' }}</span> &bull;
-                                <span>Unit: {{ $employee?->unit?->nama ?: '-' }}</span>
+                                <span>Unit Induk: {{ $employee?->unit?->nama ?: '-' }}</span>
+                                @if($attendance->unit)
+                                    &bull; <span class="font-bold text-indigo-700">Unit Absensi: {{ $attendance->unit->nama }}</span>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -89,7 +92,12 @@
                                 </div>
                                 <div>
                                     <span class="text-gray-400 block">Koordinat GPS:</span>
-                                    <span class="font-mono text-gray-800">{{ $attendance->latitude_masuk }}, {{ $attendance->longitude_masuk }}</span>
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="font-mono text-gray-800">{{ $attendance->latitude_masuk }}, {{ $attendance->longitude_masuk }}</span>
+                                        <a href="https://www.google.com/maps?q={{ $attendance->latitude_masuk }},{{ $attendance->longitude_masuk }}" target="_blank" class="inline-flex items-center text-[11px] text-blue-600 hover:text-blue-800 font-semibold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                                            📍 Buka Sharelok (Google Maps)
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="flex justify-between">
                                     <div>
@@ -132,7 +140,12 @@
                                 </div>
                                 <div>
                                     <span class="text-gray-400 block">Koordinat GPS:</span>
-                                    <span class="font-mono text-gray-800">{{ $attendance->latitude_pulang }}, {{ $attendance->longitude_pulang }}</span>
+                                    <div class="flex items-center gap-2 flex-wrap">
+                                        <span class="font-mono text-gray-800">{{ $attendance->latitude_pulang }}, {{ $attendance->longitude_pulang }}</span>
+                                        <a href="https://www.google.com/maps?q={{ $attendance->latitude_pulang }},{{ $attendance->longitude_pulang }}" target="_blank" class="inline-flex items-center text-[11px] text-blue-600 hover:text-blue-800 font-semibold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                                            📍 Buka Sharelok (Google Maps)
+                                        </a>
+                                    </div>
                                 </div>
                                 <div class="flex justify-between">
                                     <div>

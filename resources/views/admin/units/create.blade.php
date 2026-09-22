@@ -63,11 +63,30 @@
                         </label>
                         <select name="status" id="status" required class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500 @error('status') border-red-500 @enderror">
                             <option value="1" {{ old('status', '1') === '1' ? 'selected' : '' }}>Aktif (Dapat digunakan untuk penempatan pegawai)</option>
-                            <option value="0" {{ old('status') === '0' ? 'selected' : '' }}>Nonaktif</option>
+                            <option value="0" {{ old('status', '1') === '0' ? 'selected' : '' }}>Nonaktif</option>
                         </select>
                         @error('status')
                             <p class="mt-1 text-xs text-red-600 font-medium">{{ $message }}</p>
                         @enderror
+                    </div>
+
+                    <!-- Pengaturan Dinas Lapangan (Sistem GPS Sharelok) -->
+                    <div class="p-4 bg-indigo-50/70 border border-indigo-200 rounded-xl">
+                        <label class="flex items-start cursor-pointer">
+                            <input type="checkbox" name="is_dinas_lapangan" id="is_dinas_lapangan" value="1" {{ old('is_dinas_lapangan') ? 'checked' : '' }} class="mt-1 h-4 w-4 rounded border-indigo-300 text-indigo-600 focus:ring-indigo-500">
+                            <div class="ml-3">
+                                <span class="block text-sm font-bold text-indigo-900 flex items-center gap-1.5">
+                                    <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    Unit Dinas Lapangan (Sistem Presensi Berbasis Sharelok)
+                                </span>
+                                <span class="block text-xs text-indigo-700 mt-1">
+                                    Centang jika unit ini bertugas di luar kantor / dinas lapangan. Pegawai unit ini dapat melakukan presensi langsung dengan membagikan titik GPS real-time (Sharelok) tanpa batasan kaku radius gedung kantor pusat.
+                                </span>
+                            </div>
+                        </label>
                     </div>
 
                     <!-- Action Buttons -->

@@ -128,8 +128,13 @@
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="text-xs text-gray-700 font-medium">
-                                            {{ $item->employee?->unit?->nama ?: '-' }}
+                                            {{ $item->unit?->nama ?: ($item->employee?->unit?->nama ?: '-') }}
                                         </span>
+                                        @if($item->unit_id && $item->employee?->unit_id && $item->unit_id !== $item->employee->unit_id)
+                                            <div class="text-[10px] text-indigo-600 font-semibold mt-0.5">
+                                                (Induk: {{ $item->employee->unit?->nama }})
+                                            </div>
+                                        @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-center">
                                         @if($item->jam_masuk)

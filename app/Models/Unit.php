@@ -11,6 +11,7 @@ class Unit extends Model
         'nama',
         'alamat',
         'status',
+        'is_dinas_lapangan',
     ];
 
     public function employees()
@@ -23,10 +24,16 @@ class Unit extends Model
         return $this->hasMany(OfficeLocation::class);
     }
 
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
     protected function casts(): array
     {
         return [
             'status' => 'boolean',
+            'is_dinas_lapangan' => 'boolean',
         ];
     }
 }

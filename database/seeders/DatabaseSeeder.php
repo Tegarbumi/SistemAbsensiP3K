@@ -35,6 +35,27 @@ class DatabaseSeeder extends Seeder
                 'nama' => 'Dinas Kearsipan dan Perpustakaan Kabupaten Subang',
                 'alamat' => 'Jl. MT Haryono No. 9, Karanganyar, Kec. Subang, Kabupaten Subang, Jawa Barat 41211',
                 'status' => true,
+                'is_dinas_lapangan' => false,
+            ]
+        );
+
+        $unitLapangan = Unit::firstOrCreate(
+            ['kode' => 'DINAS-LAPANGAN'],
+            [
+                'nama' => 'Unit Pelaksana Teknis Dinas Lapangan',
+                'alamat' => 'Penugasan Lapangan / Mobile (Sistem GPS Sharelok)',
+                'status' => true,
+                'is_dinas_lapangan' => true,
+            ]
+        );
+
+        $unitPerpusda = Unit::firstOrCreate(
+            ['kode' => 'PERPUSDA-SBG'],
+            [
+                'nama' => 'Perpustakaan Daerah Kabupaten Subang',
+                'alamat' => 'Kabupaten Subang, Jawa Barat',
+                'status' => true,
+                'is_dinas_lapangan' => false,
             ]
         );
 
@@ -51,7 +72,20 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 4. Jadwal Kerja
+        // 4. Lokasi Kantor Perpustakaan Daerah
+        $officePerpusda = OfficeLocation::firstOrCreate(
+            ['nama' => 'Kantor Perpustakaan Daerah Kabupaten Subang'],
+            [
+                'unit_id' => $unitPerpusda->id,
+                'alamat' => 'Kabupaten Subang, Jawa Barat',
+                'latitude' => -6.5710000,
+                'longitude' => 107.7520000,
+                'radius_meter' => 80,
+                'status' => true,
+            ]
+        );
+
+        // 5. Jadwal Kerja
         $schedule = WorkSchedule::firstOrCreate(
             ['nama' => 'Jadwal Kerja Reguler PPPK'],
             [

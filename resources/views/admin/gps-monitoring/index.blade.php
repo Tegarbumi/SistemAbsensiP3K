@@ -173,9 +173,12 @@
                             <div>Waktu: <span class="font-semibold">${item.waktu} WIB</span></div>
                             <div>Status: <span class="font-semibold capitalize">${item.status}</span></div>
                             <div>Jarak Kantor: <span class="font-bold text-gray-800">${item.jarak} meter</span></div>
-                            <div class="mt-2 pt-1 border-t border-gray-200">
-                                <a href="/admin/absensi/${item.attendance_id}" class="text-indigo-600 hover:text-indigo-800 font-semibold">
-                                    Lihat Detail Lengkap &rarr;
+                            <div class="mt-2 pt-1.5 border-t border-gray-200 flex flex-col gap-1">
+                                <a href="https://www.google.com/maps?q=${lat},${lng}" target="_blank" class="inline-flex items-center text-blue-600 hover:text-blue-800 font-semibold text-[11px]">
+                                    📍 Buka Sharelok di Google Maps &rarr;
+                                </a>
+                                <a href="/admin/absensi/${item.attendance_id}" class="text-indigo-600 hover:text-indigo-800 font-semibold text-[11px]">
+                                    Lihat Detail Lengkap Absensi &rarr;
                                 </a>
                             </div>
                         </div>

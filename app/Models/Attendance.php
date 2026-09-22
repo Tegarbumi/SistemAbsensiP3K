@@ -8,6 +8,7 @@ class Attendance extends Model
 {
     protected $fillable = [
         'employee_id',
+        'unit_id',
         'tanggal',
         'jam_masuk',
         'jam_pulang',
@@ -31,12 +32,25 @@ class Attendance extends Model
     {
         return [
             'tanggal' => 'date',
+            'latitude_masuk' => 'float',
+            'longitude_masuk' => 'float',
+            'accuracy_masuk' => 'float',
+            'distance_masuk' => 'float',
+            'latitude_pulang' => 'float',
+            'longitude_pulang' => 'float',
+            'accuracy_pulang' => 'float',
+            'distance_pulang' => 'float',
         ];
     }
 
     public function employee()
     {
         return $this->belongsTo(Employee::class);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
     }
 
     public function locations()

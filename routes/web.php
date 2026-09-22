@@ -136,6 +136,11 @@ Route::middleware(['auth', 'role:pppk'])
             'checkOut'
         ])->name('attendance.checkout');
 
+        Route::post('/absensi/reset', [
+            AttendanceController::class,
+            'resetAttendance'
+        ])->name('attendance.reset');
+
         Route::get('/riwayat-absensi', [
             \App\Http\Controllers\Employee\AttendanceHistoryController::class,
             'index'

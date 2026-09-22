@@ -40,7 +40,7 @@
 
             <!-- Form Filter & Pencarian -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-xl border border-gray-200 p-6">
-                <form method="GET" action="{{ route('admin.units.index') }}" class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-end">
+                <form method="GET" action="{{ route('admin.units.index') }}" class="grid grid-cols-1 sm:grid-cols-4 gap-4 items-end">
                     <div>
                         <label for="search" class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Cari Kode / Nama Unit</label>
                         <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Ketik kode atau nama..." class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
@@ -52,6 +52,15 @@
                             <option value="all">Semua Status</option>
                             <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Aktif</option>
                             <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Nonaktif</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="tipe" class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Tipe Unit</label>
+                        <select name="tipe" id="tipe" class="w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <option value="all">Semua Tipe</option>
+                            <option value="lapangan" {{ request('tipe') === 'lapangan' ? 'selected' : '' }}>Dinas Lapangan (Sharelok)</option>
+                            <option value="kantor" {{ request('tipe') === 'kantor' ? 'selected' : '' }}>Kantor Tetap</option>
                         </select>
                     </div>
 
@@ -89,7 +98,18 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="font-semibold text-gray-900">{{ $unit->nama }}</div>
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <span class="font-semibold text-gray-900">{{ $unit->nama }}</span>
+                                            @if($unit->is_dinas_lapangan)
+                                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-indigo-100 text-indigo-800 border border-indigo-200">
+                                                    <svg class="w-3 h-3 mr-1 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                    </svg>
+                                                    Dinas Lapangan (Sharelok)
+                                                </span>
+                                            @endif
+                                        </div>
                                         @if($unit->office_locations_count > 0)
                                             <div class="text-xs text-gray-500">{{ $unit->office_locations_count }} lokasi kantor terkait</div>
                                         @endif

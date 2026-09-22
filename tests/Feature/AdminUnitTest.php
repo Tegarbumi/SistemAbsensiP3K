@@ -175,3 +175,36 @@ test('unit tanpa relasi dapat dihapus oleh admin', function () {
 
     $this->assertDatabaseMissing('units', ['id' => $cleanUnit->id]);
 });
+
+test('admin dapat menambahkan unit kerja dinas lapangan dengan sistem sharelok', function () {
+    $response = $this->actingAs($this->admin)->post(route('admin.units.store'), [
+        'kode' => 'UNIT-LAP-TEST',
+        'nama' => 'Unit Pelaksana Lapangan',
+        'alamat' => 'Mobile / Lapangan',
+        'status' => '1',
+        'is_dinas_lapangan' => '1',
+    ]);
+
+    $response->assertRedirect(route('admin.units.index'));
+    $response->assertSessionHas('success');
+
+    $this->assertDatabaseHas('units', [
+        'kode' => 'UNIT-LAP-TEST',
+        'nama' => 'Unit Pelaksana Lapangan',
+        'is_dinas_lapangan' => true,
+    ]);
+});
+
+test('admin dapat memfilter unit dinas lapangan', function () {
+    Unit::create([
+        'kode' => 'UNIT-LAP-2',
+        'nama' => 'Tim Reaksi Cepat Lapangan',
+        'status' => true,
+        'is_dinas_lapangan' => true,
+    ]);
+
+    $response = $this->actingAs($this->admin)->get(route('admin.units.index', ['tipe' => 'lapangan']));
+    $response->assertStatus(200);
+    $response->assertSee('Tim Reaksi Cepat Lapangan');
+    $response->assertSee('Dinas Lapangan (Sharelok)');
+});

@@ -32,6 +32,12 @@ class UnitController extends Controller
             $query->where('status', $statusBool);
         }
 
+        // Filter tipe unit (dinas lapangan / kantor)
+        if ($request->has('tipe') && $request->input('tipe') !== 'all' && $request->input('tipe') !== null) {
+            $isLapangan = $request->input('tipe') === 'lapangan' || $request->input('tipe') === '1';
+            $query->where('is_dinas_lapangan', $isLapangan);
+        }
+
         $units = $query->orderBy('nama', 'asc')->paginate(10)->withQueryString();
 
         return view('admin.units.index', [
@@ -57,6 +63,7 @@ class UnitController extends Controller
             'nama' => ['required', 'string', 'max:255'],
             'alamat' => ['nullable', 'string'],
             'status' => ['required', 'in:0,1'],
+            'is_dinas_lapangan' => ['nullable', 'boolean'],
         ], [
             'kode.required' => 'Kode unit wajib diisi.',
             'kode.unique' => 'Kode unit sudah digunakan.',
@@ -69,6 +76,7 @@ class UnitController extends Controller
             'nama' => trim($validated['nama']),
             'alamat' => $validated['alamat'] ? trim($validated['alamat']) : null,
             'status' => (bool)$validated['status'],
+            'is_dinas_lapangan' => $request->boolean('is_dinas_lapangan'),
         ]);
 
         return redirect()->route('admin.units.index')
@@ -95,6 +103,7 @@ class UnitController extends Controller
             'nama' => ['required', 'string', 'max:255'],
             'alamat' => ['nullable', 'string'],
             'status' => ['required', 'in:0,1'],
+            'is_dinas_lapangan' => ['nullable', 'boolean'],
         ], [
             'kode.required' => 'Kode unit wajib diisi.',
             'kode.unique' => 'Kode unit sudah digunakan.',
@@ -107,6 +116,7 @@ class UnitController extends Controller
             'nama' => trim($validated['nama']),
             'alamat' => $validated['alamat'] ? trim($validated['alamat']) : null,
             'status' => (bool)$validated['status'],
+            'is_dinas_lapangan' => $request->boolean('is_dinas_lapangan'),
         ]);
 
         return redirect()->route('admin.units.index')

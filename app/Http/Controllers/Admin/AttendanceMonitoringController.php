@@ -19,7 +19,7 @@ class AttendanceMonitoringController extends Controller
     {
         $selectedDate = $request->input('tanggal', Carbon::today()->toDateString());
 
-        $query = Attendance::with(['employee.unit', 'employee.user'])
+        $query = Attendance::with(['employee.unit', 'employee.user', 'unit'])
             ->whereDate('tanggal', $selectedDate);
 
         // Filter nama / NIP
@@ -83,13 +83,14 @@ class AttendanceMonitoringController extends Controller
      */
     public function show(Attendance $attendance): View
     {
-        $attendance->load(['employee.unit', 'employee.user', 'locations']);
+        $attendance->load(['employee.unit', 'employee.user', 'unit', 'locations']);
         $employee = $attendance->employee;
 
-        // Ambil lokasi kantor acuan
+        // Ambil lokasi kantor acuan berdasarkan unit yang dipilih saat absen (atau fallback ke unit pegawai)
+        $effectiveUnitId = $attendance->unit_id ?: $employee?->unit_id;
         $officeLocation = null;
-        if ($employee && $employee->unit_id) {
-            $officeLocation = OfficeLocation::where('unit_id', $employee->unit_id)
+        if ($effectiveUnitId) {
+            $officeLocation = OfficeLocation::where('unit_id', $effectiveUnitId)
                 ->where('status', true)
                 ->first();
         }
