@@ -112,8 +112,8 @@
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-left font-semibold">Pegawai PPPK</th>
                                 <th scope="col" class="px-6 py-3 text-left font-semibold">Unit Kerja</th>
-                                <th scope="col" class="px-6 py-3 text-center font-semibold">Masuk & Selfie</th>
-                                <th scope="col" class="px-6 py-3 text-center font-semibold">Pulang & Selfie</th>
+                                <th scope="col" class="px-6 py-3 text-center font-semibold">Masuk</th>
+                                <th scope="col" class="px-6 py-3 text-center font-semibold">Pulang</th>
                                 <th scope="col" class="px-6 py-3 text-center font-semibold">Status</th>
                                 <th scope="col" class="px-6 py-3 text-center font-semibold">Jarak GPS</th>
                                 <th scope="col" class="px-6 py-3 text-right font-semibold">Aksi</th>

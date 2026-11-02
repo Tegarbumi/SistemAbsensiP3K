@@ -125,5 +125,8 @@ class DatabaseSeeder extends Seeder
                 'status' => true,
             ]
         );
+
+        // 7. Data Pegawai PPPK Disarpus Subang (16 Pegawai)
+        $this->call(PppkEmployeesSeeder::class);
     }
 }

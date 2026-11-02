@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Models\Employee;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,7 +29,7 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required', 'string', 'email'],
+            'email' => ['required', 'string'],
             'password' => ['required', 'string'],
         ];
     }
@@ -42,7 +43,24 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+        $loginInput = trim($this->input('email'));
+        $password = $this->input('password');
+        $remember = $this->boolean('remember');
+
+        // Cek login via format email atau NIP pegawai
+        if (filter_var($loginInput, FILTER_VALIDATE_EMAIL)) {
+            $attempt = Auth::attempt(['email' => $loginInput, 'password' => $password], $remember);
+        } else {
+            // Cari pegawai berdasarkan NIP
+            $employee = Employee::where('nip', $loginInput)->first();
+            if ($employee && $employee->user) {
+                $attempt = Auth::attempt(['email' => $employee->user->email, 'password' => $password], $remember);
+            } else {
+                $attempt = false;
+            }
+        }
+
+        if (! $attempt) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

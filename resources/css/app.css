@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    /* Design Tokens - Portal Resmi Pemerintah Kab. Subang (Disarpus) */
+    --gov-blue: #1b365d;          /* Biru tua instansi pemerintah */
+    --gov-blue-hover: #12243e;    /* Hover biru tua */
+    --gov-blue-subtle: #f0f4f9;   /* Background biru sangat lembut */
+    --gov-border: #cbd5e1;        /* Border tipis tegas (slate-300) */
+    --gov-green: #15803d;         /* Hijau resmi untuk indikator status aman/aktif */
+    --gov-green-subtle: #f0fdf4;  /* Background hijau muda lembut */
+    --gov-red: #b91c1c;           /* Merah resmi untuk peringatan/ketentuan wajib */
+    --gov-red-subtle: #fef2f2;    /* Background merah muda lembut */
+}
+
+.dark {
+    --gov-blue: #2563eb;          /* Biru kontras tinggi untuk mode gelap */
+    --gov-blue-hover: #1d4ed8;    /* Hover biru */
+    --gov-blue-subtle: #1e293b;   /* Background kontras slate */
+    --gov-border: #334155;        /* Border slate-700 */
+    --gov-green: #22c55e;         /* Hijau terang untuk dark mode */
+    --gov-green-subtle: #052e16;  /* Background hijau gelap */
+    --gov-red: #ef4444;           /* Merah terang untuk dark mode */
+    --gov-red-subtle: #450a0a;    /* Background merah gelap */
+}
+
 @layer base {
     /* Global Smooth Dark Mode Theming */
     .dark body {
