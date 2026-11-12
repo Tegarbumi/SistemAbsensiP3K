@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Presensi Pegawai PPPK - Dinas Kearsipan dan Perpustakaan Kabupaten Subang</title>
 
-    <!-- Theme Initialization to prevent flash of wrong theme -->
+    <!-- Theme Initialization: default is light, dark only if explicitly set -->
     <script>
-        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        if (localStorage.getItem('theme') === 'dark') {
             document.documentElement.classList.add('dark');
         } else {
             document.documentElement.classList.remove('dark');
@@ -32,7 +32,7 @@
             localStorage.setItem('theme', 'light');
         }
     }
-}" class="font-sans bg-slate-100/70 dark:bg-slate-950 text-slate-800 dark:text-slate-100 antialiased min-h-screen flex flex-col justify-between transition-colors duration-150">
+}" class="font-sans bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 antialiased min-h-screen flex flex-col justify-between transition-colors duration-200">
 
     <!-- Header Navigasi Resmi Instansi -->
     <header class="bg-white dark:bg-slate-900 border-b border-slate-300 dark:border-slate-800 sticky top-0 z-30 transition-colors duration-150">
