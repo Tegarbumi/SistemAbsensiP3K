@@ -12,6 +12,9 @@ export default {
 
     theme: {
         extend: {
+            screens: {
+                xs: '400px',
+            },
             fontFamily: {
                 sans: ['"IBM Plex Sans"', ...defaultTheme.fontFamily.sans],
             },

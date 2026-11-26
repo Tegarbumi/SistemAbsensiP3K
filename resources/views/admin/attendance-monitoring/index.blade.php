@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div class="flex flex-col xs:flex-row justify-between items-start xs:items-center gap-3">
             <div>
                 <h2 class="font-bold text-lg text-slate-900 dark:text-white tracking-tight">
                     {{ __('Monitoring Presensi PPPK') }}
@@ -19,8 +19,8 @@
         </div>
     </x-slot>
 
-    <div class="py-6 sm:py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+    <div class="py-4 sm:py-6 lg:py-8">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 space-y-5">
 
             <!-- Kartu Ringkasan Kehadiran Hari Terpilih -->
             <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
@@ -61,8 +61,8 @@
                 </div>
             </div>
 
-            <!-- Form Filter Pencarian -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200/90 dark:border-slate-700/80 p-5 shadow-xs transition-colors duration-200">
+            {{-- Form Filter Pencarian --}}
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/90 dark:border-slate-700/80 p-4 sm:p-5 shadow-xs transition-colors duration-200">
                 <form method="GET" action="{{ route('admin.attendance-monitoring.index') }}" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
                     <div>
                         <label for="tanggal" class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider mb-1.5">Tanggal</label>
@@ -114,9 +114,9 @@
                 </form>
             </div>
 
-            <!-- Tabel Data Absensi -->
-            <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200/90 dark:border-slate-700/80 shadow-xs overflow-hidden transition-colors duration-200">
-                <div class="overflow-x-auto">
+            {{-- Tabel Data Absensi --}}
+            <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200/90 dark:border-slate-700/80 shadow-xs overflow-hidden transition-colors duration-200">
+                <div class="overflow-x-auto -webkit-overflow-scrolling-touch">
                     <table class="min-w-full divide-y divide-slate-200 dark:divide-slate-700 text-xs sm:text-sm text-left">
                         <thead class="bg-slate-50 dark:bg-slate-800/90 text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                             <tr>

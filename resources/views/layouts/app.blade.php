@@ -92,8 +92,8 @@
                 :class="desktopOpen ? 'lg:pl-64 xl:pl-72' : 'lg:pl-0'">
                 
                 <!-- Top Navigation Header -->
-                <header class="sticky top-0 z-20 h-16 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-4 sm:px-6 lg:px-8 flex items-center justify-between shadow-2xs transition-colors duration-200">
-                    <div class="flex items-center gap-3">
+                <header class="sticky top-0 z-20 h-16 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-3 sm:px-6 lg:px-8 flex items-center justify-between shadow-2xs transition-colors duration-200">
+                    <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 mr-2">
                         <!-- Hamburger Menu Button -->
                         <button 
                             type="button" 
@@ -108,15 +108,15 @@
                         </button>
 
                         <!-- Context Breadcrumb -->
-                        <div class="flex items-center gap-2 text-xs font-medium text-slate-500 dark:text-slate-400">
-                            <div class="hidden sm:flex items-center gap-1.5 text-slate-600 dark:text-slate-300">
+                        <div class="flex items-center gap-1.5 sm:gap-2 text-xs font-medium text-slate-500 dark:text-slate-400 min-w-0">
+                            <div class="hidden sm:flex items-center gap-1.5 text-slate-600 dark:text-slate-300 shrink-0">
                                 <svg class="w-3.5 h-3.5 text-blue-600 dark:text-blue-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
                                 </svg>
                                 <span class="font-semibold">Disarpus Subang</span>
                             </div>
                             <span class="hidden sm:inline-block text-slate-300 dark:text-slate-600">/</span>
-                            <span class="text-slate-800 dark:text-slate-200 font-semibold truncate max-w-[180px] sm:max-w-none">
+                            <span class="text-slate-800 dark:text-slate-200 font-semibold truncate max-w-[120px] xs:max-w-[180px] sm:max-w-none">
                                 @if(request()->routeIs('dashboard'))
                                     Dashboard
                                 @elseif(request()->routeIs('admin.employees.*'))
